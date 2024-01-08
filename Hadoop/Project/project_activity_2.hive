@@ -1,0 +1,14 @@
+--DROP TABLES
+DROP TABLE episodeIV;
+
+-- For episode IV
+CREATE TABLE episodeIV (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+-- Load episodeIV text file into the table
+LOAD DATA LOCAL INPATH '/root/inputs/episodeIV_dialogues.txt' INTO TABLE episodeIV;
+
+-- Generate output and export it
+INSERT OVERWRITE LOCAL DIRECTORY '/root/HiveOutput2'
+SELECT COUNT(*) FROM episodeIV WHERE INSTR(line, 'Luke')>0;
+-- output:56
